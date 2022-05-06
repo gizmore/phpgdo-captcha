@@ -1,2 +1,2 @@
-# phpgdo-captcha
-GDOv7 Captcha module. Using a very old and cheap 3rd party solution. Other Captcha providers are available.
+# gdo6-captcha
+Captcha module for gdo6, using PHPCaptcha third party code from Edward Eliot.
