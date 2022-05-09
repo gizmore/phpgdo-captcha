@@ -2,7 +2,7 @@
 namespace GDO\Captcha;
 
 use GDO\Core\GDO_Module;
-use GDO\DB\GDT_Int;
+use GDO\Core\GDT_Int;
 use GDO\UI\GDT_Color;
 use GDO\UI\GDT_Font;
 
@@ -19,7 +19,7 @@ final class Module_Captcha extends GDO_Module
     public $module_license = 'BSD';
     
 	public function onLoadLanguage() { return $this->loadLanguage('lang/captcha'); }
-	public function getConfig()
+	public function getConfig() : array
 	{
 		return array(
 			GDT_Font::make('captcha_font')->multiple()->minSelected(1)->initialValue(["GDO/Core/thm/default/fonts/arial.ttf"])->notNull(),

@@ -6,6 +6,7 @@ use GDO\Captcha\PhpCaptcha;
 use GDO\Session\GDO_Session;
 use GDO\Net\HTTP;
 use GDO\Core\MethodAjax;
+use GDO\Core\GDT;
 
 /**
  * Create and display a captcha.
@@ -18,7 +19,7 @@ use GDO\Core\MethodAjax;
  */
 class Image extends MethodAjax
 {
-	public function execute() 
+	public function execute() : GDT
 	{
 		# Load the Captcha class
 		$module = Module_Captcha::instance();
