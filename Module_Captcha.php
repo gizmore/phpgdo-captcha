@@ -16,7 +16,7 @@ use GDO\UI\GDT_Font;
  */
 final class Module_Captcha extends GDO_Module
 {
-    public $module_license = 'BSD';
+    public string $license = 'BSD';
     
 	public function onLoadLanguage() { return $this->loadLanguage('lang/captcha'); }
 	public function getConfig() : array

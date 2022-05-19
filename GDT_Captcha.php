@@ -45,7 +45,7 @@ class GDT_Captcha extends GDT_String
 	    return href('Captcha', 'image', '&new=1&_ajax=1');
 	}
 
-	public function renderForm()
+	public function renderForm() : string
 	{
 		return GDT_Template::php('Captcha', 'form/captcha.php', ['field' => $this]);
 	}
