@@ -19,7 +19,7 @@ class GDT_Captcha extends GDT_String
 {
 	use WithIcon;
 	
-	public $notNull = true;
+	public string $notNull = true;
 	
 	public $cli = false;
 	
