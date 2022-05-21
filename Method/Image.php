@@ -19,7 +19,7 @@ use GDO\Core\GDT;
  */
 class Image extends MethodAjax
 {
-	public function execute() : GDT
+	public function execute()
 	{
 		# Load the Captcha class
 		$module = Module_Captcha::instance();
