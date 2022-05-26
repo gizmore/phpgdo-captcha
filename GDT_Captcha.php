@@ -55,7 +55,7 @@ class GDT_Captcha extends GDT_String
 	################
 	public function validate($value) : bool
 	{
-	    $app = Application::instance();
+	    $app = Application::$INSTANCE;
 	    if ($app->isCLI() || $app->isUnitTests())
 	    {
 	        return true;
