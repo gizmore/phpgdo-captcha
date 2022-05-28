@@ -5,17 +5,15 @@ use GDO\Captcha\Module_Captcha;
 use GDO\Captcha\PhpCaptcha;
 use GDO\Session\GDO_Session;
 use GDO\Net\HTTP;
-use GDO\Core\MethodAjax;
 use GDO\Core\GDT;
+use GDO\Core\MethodAjax;
 
 /**
  * Create and display a captcha.
  * 
  * @author gizmore
- * @author spaceone
- * 
- * @since 2.0
- * @version 5.0
+ * @version 7.0.0
+ * @since 2.0.0
  */
 class Image extends MethodAjax
 {
