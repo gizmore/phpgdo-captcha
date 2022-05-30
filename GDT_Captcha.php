@@ -23,7 +23,7 @@ class GDT_Captcha extends GDT_String
 	
 	public function addFormValue(GDT_Form $form, $value) {}
 	
-	public function defaultName() { return 'captcha'; }
+	public function getDefaultName() : string { return 'captcha'; }
 	
 	protected function __construct()
 	{
