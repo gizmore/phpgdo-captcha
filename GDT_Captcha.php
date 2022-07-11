@@ -88,7 +88,7 @@ class GDT_Captcha extends GDT_String
 	private function unsetRequest()
 	{
 	    $this->var = $this->initial = null;
-	    unset($_REQUEST[$this->formVariable()][$this->name]);
+// 	    unset($_REQUEST[$this->formVariable()][$this->name]);
 	}
 	
 }

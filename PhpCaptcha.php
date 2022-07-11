@@ -322,7 +322,7 @@ use GDO\Util\Random;
 			$iY = $this->iHeight / 2 + $iCharHeight / 4; 
 			
 			// write text to image
-			imagefttext($this->oImage, $iFontSize, $iAngle, $iX, $iY, $iTextColour, $sCurrentFont, $this->sCode[$i], array());
+			imagefttext($this->oImage, $iFontSize, $iAngle, (int)$iX, (int)$iY, $iTextColour, $sCurrentFont, $this->sCode[$i], array());
 			
 			if ($this->bCharShadow) {
 			   $iOffsetAngle = rand(-30, 30);

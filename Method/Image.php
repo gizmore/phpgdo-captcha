@@ -7,6 +7,8 @@ use GDO\Session\GDO_Session;
 use GDO\Net\HTTP;
 use GDO\Core\GDT;
 use GDO\Core\MethodAjax;
+use GDO\Core\Application;
+use GDO\Core\GDT_Response;
 
 /**
  * Create and display a captcha.
@@ -17,6 +19,8 @@ use GDO\Core\MethodAjax;
  */
 class Image extends MethodAjax
 {
+	public function isTrivial() { return false; }
+	
 	public function execute()
 	{
 		# Load the Captcha class
@@ -39,7 +43,6 @@ class Image extends MethodAjax
 		    GDO_Session::remove('php_captcha_lock');
 		    GDO_Session::commit();
 		}
-		
 		$challenge = GDO_Session::get('php_captcha_lock', true);
 		$oVisualCaptcha->Create('', $challenge);
 		die();
