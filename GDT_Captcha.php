@@ -59,13 +59,15 @@ class GDT_Captcha extends GDT_String
 	        return true;
 	    }
 	    
-		$stored = GDO_Session::get('php_captcha');
-		if (strtoupper($value) === strtoupper($stored))
+		if ($stored = GDO_Session::get('php_captcha'))
 		{
-		    $this->unsetRequest();
-		    GDO_Session::set('php_captcha_lock', strtoupper($value));
-		    $this->initial($value);
-		    return true;
+			if (strtoupper($value) === strtoupper($stored))
+			{
+			    $this->unsetRequest();
+			    GDO_Session::set('php_captcha_lock', strtoupper($value));
+			    $this->initial($value);
+			    return true;
+			}
 		}
 		return $this->invalidate();
 	}
