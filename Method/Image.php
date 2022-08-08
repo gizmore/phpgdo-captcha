@@ -5,21 +5,18 @@ use GDO\Captcha\Module_Captcha;
 use GDO\Captcha\PhpCaptcha;
 use GDO\Session\GDO_Session;
 use GDO\Net\HTTP;
-use GDO\Core\GDT;
 use GDO\Core\MethodAjax;
-use GDO\Core\Application;
-use GDO\Core\GDT_Response;
 
 /**
  * Create and display a captcha.
  * 
  * @author gizmore
- * @version 7.0.0
+ * @version 7.0.1
  * @since 2.0.0
  */
 class Image extends MethodAjax
 {
-	public function isTrivial() { return false; }
+	public function isTrivial() : bool { return false; }
 	
 	public function execute()
 	{
