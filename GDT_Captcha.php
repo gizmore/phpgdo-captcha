@@ -9,15 +9,12 @@ use GDO\Core\GDT_String;
 /**
  * Very basic captcha and easy to solve. Solving rate for humans is around 98%. Bots easily can cope with it.
  * 
- * @deprecated @TODO: captcha is too easy to break.
  * @author gizmore
  * @version 7.0.1
  * @since 3.4.0
  */
 class GDT_Captcha extends GDT_String
 {
-// 	public function addFormValue(GDT_Form $form, $value) {}
-	
 	public function getDefaultName() : string { return 'captcha'; }
 	
 	protected function __construct()
@@ -26,7 +23,7 @@ class GDT_Captcha extends GDT_String
 		$this->icon('captcha');
 		$this->notNull();
 		$this->tooltip('tt_captcha');
-		$this->initial = GDO_Session::get('php_captcha_lock');
+		$this->initial(GDO_Session::get('php_captcha_lock'));
 	}
 	
 	public function hrefCaptcha() : string
@@ -68,23 +65,23 @@ class GDT_Captcha extends GDT_String
 		return $this->invalidate();
 	}
 	
+	public function onSubmitted() : void
+	{
+		$this->invalidate();
+	}
+	
 	public function invalidate() : bool
 	{
-		$this->onValidated();
+		GDO_Session::remove('php_captcha');
+		GDO_Session::remove('php_captcha_lock');
+		$this->unsetRequest();
 		return $this->error('err_captcha');
 	}
 
-	public function onValidated() : void
-	{
-	    GDO_Session::remove('php_captcha');
-	    GDO_Session::remove('php_captcha_lock');
-	    $this->unsetRequest();
-	}
-	
 	private function unsetRequest() : void
 	{
-	    $this->var = $this->initial = null;
-	    unset($this->inputs[$this->name]);
+		$this->reset(true);
+		$this->initial(null);
 	}
 	
 }
