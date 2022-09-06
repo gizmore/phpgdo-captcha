@@ -27,8 +27,12 @@ class Image extends MethodAjax
 		HTTP::noCache();
 		
 		# Setup Font, Color, Size
-		$aFonts = $module->cfgCaptchaFonts();
-		foreach ($aFonts as $i => $font) { $aFonts[$i] = GDO_PATH . "/$font"; }
+		$aFonts = [];
+		$bFonts = $module->cfgCaptchaFonts();
+		foreach ($bFonts as $path => $font)
+		{
+			$aFonts[] = GDO_PATH . $path;
+		}
 		$rgbcolor = ltrim($module->cfgCaptchaBG(), '#');
 		$width = $module->cfgCaptchaWidth();
 		$height = $module->cfgCaptchaHeight();

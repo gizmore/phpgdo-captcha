@@ -30,10 +30,15 @@ final class Module_Captcha extends GDO_Module
 			GDT_UInt::make('captcha_height')->initial('48')->min(24)->max(256)->notNull(),
 		];
 	}
-	public function cfgCaptchaFonts() : array { return $this->getConfigValue('captcha_font'); }
 	public function cfgCaptchaBG() : string { return $this->getConfigValue('captcha_bg'); }
 	public function cfgCaptchaWidth() : int { return $this->getConfigValue('captcha_width'); }
 	public function cfgCaptchaHeight() : int { return $this->getConfigValue('captcha_height'); }
+	public function cfgCaptchaFonts() : array
+	{
+		$fonts = json_decode($this->getConfigVar('captcha_font'), true);
+		return $fonts;
+	}
+	
 	
 	#############
 	### Hooks ###
@@ -53,15 +58,15 @@ final class Module_Captcha extends GDO_Module
 	###############
 	private function getInitialFontsVar() : string
 	{
-		return '["arial","kitten","kitten2","microgramma","teen"]';
-// 		$f = 'GDO/Core/thm/default/fonts/';
-// 		return [
-// 			"{$f}arial.ttf",
-// 			"{$f}kitten.ttf",
-// 			"{$f}kitten2.ttf",
-// 			"{$f}microgramma.ttf",
-// 			"{$f}teen.ttf",
-// 		];
+		$f = 'GDO/Core/thm/default/fonts/';
+		$fonts = [
+			"{$f}arial.ttf" => 'arial',
+// 			"{$f}kitten.ttf" => 'kitten',
+// 			"{$f}kitten2.ttf" => 'kitten2',
+			"{$f}microgramma.ttf" => 'microgramma',
+// 			"{$f}teen.ttf" => 'teen',
+		];
+		return json_encode($fonts);
 	}
 
 }
