@@ -1,5 +1,6 @@
 <?php
 namespace GDO\Captcha\lang;
+
 return [
 	'captcha' => 'Captcha',
 	'tt_captcha' => 'Solve the captcha to acknowledge that you are not a robot.',

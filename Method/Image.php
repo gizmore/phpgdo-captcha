@@ -3,29 +3,31 @@ namespace GDO\Captcha\Method;
 
 use GDO\Captcha\Module_Captcha;
 use GDO\Captcha\PhpCaptcha;
-use GDO\Session\GDO_Session;
-use GDO\Net\HTTP;
+use GDO\Core\GDT;
 use GDO\Core\MethodAjax;
+use GDO\Net\HTTP;
+use GDO\Session\GDO_Session;
 
 /**
  * Create and display a captcha.
- * 
- * @author gizmore
+ *
  * @version 7.0.1
  * @since 2.0.0
+ * @author gizmore
  */
 class Image extends MethodAjax
 {
-	public function isTrivial() : bool { return false; }
-	
-	public function execute()
+
+	public function isTrivial(): bool { return false; }
+
+	public function execute(): GDT
 	{
 		# Load the Captcha class
 		$module = Module_Captcha::instance();
-		
+
 		# disable HTTP Caching
 		HTTP::noCache();
-		
+
 		# Setup Font, Color, Size
 		$aFonts = [];
 		$bFonts = $module->cfgCaptchaFonts();
@@ -37,16 +39,16 @@ class Image extends MethodAjax
 		$width = $module->cfgCaptchaWidth();
 		$height = $module->cfgCaptchaHeight();
 		$oVisualCaptcha = new PhpCaptcha($aFonts, $width, $height, $rgbcolor);
-		
+
 		if (isset($_REQUEST['new']))
 		{
-		    GDO_Session::remove('php_captcha');
-		    GDO_Session::remove('php_captcha_lock');
-		    GDO_Session::commit();
+			GDO_Session::remove('php_captcha');
+			GDO_Session::remove('php_captcha_lock');
+			GDO_Session::commit();
 		}
 		$challenge = GDO_Session::get('php_captcha_lock', true);
 		$oVisualCaptcha->Create('', $challenge);
 		die();
 	}
-	
+
 }
