@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
 namespace GDO\Captcha\Method;
 
 use GDO\Captcha\Module_Captcha;
 use GDO\Captcha\PhpCaptcha;
+use GDO\Core\Application;
 use GDO\Core\GDT;
 use GDO\Core\MethodAjax;
 use GDO\Net\HTTP;
@@ -11,7 +13,7 @@ use GDO\Session\GDO_Session;
 /**
  * Create and display a captcha.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 2.0.0
  * @author gizmore
  */
@@ -40,15 +42,16 @@ class Image extends MethodAjax
 		$height = $module->cfgCaptchaHeight();
 		$oVisualCaptcha = new PhpCaptcha($aFonts, $width, $height, $rgbcolor);
 
-		if (isset($_REQUEST['new']))
+		if ($this->hasInputFor('new'))
 		{
 			GDO_Session::remove('php_captcha');
 			GDO_Session::remove('php_captcha_lock');
 			GDO_Session::commit();
 		}
+
 		$challenge = GDO_Session::get('php_captcha_lock', true);
 		$oVisualCaptcha->Create('', $challenge);
-		die();
+		return Application::exit();
 	}
 
 }

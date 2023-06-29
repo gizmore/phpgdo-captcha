@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace GDO\Captcha;
 
 use GDO\Core\Application;
@@ -7,9 +8,11 @@ use GDO\Core\GDT_Template;
 use GDO\Session\GDO_Session;
 
 /**
- * Very basic captcha and easy to solve. Solving rate for humans is around 98%. Bots easily can cope with it.
+ * Very basic captcha and easy to solve.
+ * Solving rate for humans is around 97%.
+ * Bots easily can cope with it.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 3.4.0
  * @author gizmore
  */
@@ -35,14 +38,13 @@ class GDT_Captcha extends GDT_String
 	public function validate(int|float|string|array|null|object|bool $value): bool
 	{
 		$app = Application::$INSTANCE;
-		if ($app->isCLI() || $app->isUnitTests())
+		if ($app->isCLIOrUnitTest())
 		{
 			return true;
 		}
-
 		if ($stored = GDO_Session::get('php_captcha'))
 		{
-			if (strtoupper($value) === strtoupper($stored))
+			if (strcasecmp($value, $stored) === 0)
 			{
 				$this->unsetRequest();
 				GDO_Session::set('php_captcha_lock', strtoupper($value));
@@ -78,12 +80,12 @@ class GDT_Captcha extends GDT_String
 
 	public function hrefCaptcha(): string
 	{
-		return href('Captcha', 'image');
+		return href('Captcha', 'Image');
 	}
 
 	public function hrefNewCaptcha(): string
 	{
-		return href('Captcha', 'image', '&new=1&_ajax=1');
+		return href('Captcha', 'Image', '&new=1&_ajax=1');
 	}
 
 }

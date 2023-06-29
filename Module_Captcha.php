@@ -10,6 +10,8 @@ use GDO\UI\GDT_Font;
 /**
  * Captcha implementation via PhpCaptcha.php
  *
+ * Requires Session.
+ *
  * @TODO Add a hidden field captcha_title/ctitle that may not be filled out.
  *
  * @version 7.0.3
@@ -24,10 +26,19 @@ final class Module_Captcha extends GDO_Module
 	##############
 	### Config ###
 	##############
+
+	public function getDependencies(): array
+	{
+		return [
+			'Session',
+		];
+	}
+
+
 	public function getConfig(): array
 	{
 		return [
-			GDT_Font::make('captcha_font')->multiple()->minSelected(1)->maxSelected(null)->initial($this->getInitialFontsVar())->notNull(),
+			GDT_Font::make('captcha_font')->multiple()->minSelected(1)->maxSelected(20)->initial($this->getInitialFontsVar())->notNull(),
 			GDT_Color::make('captcha_bg')->initial('#f8f8f8')->notNull(),
 			GDT_UInt::make('captcha_width')->initial('256')->min(48)->max(512)->notNull(),
 			GDT_UInt::make('captcha_height')->initial('48')->min(24)->max(256)->notNull(),
@@ -39,10 +50,7 @@ final class Module_Captcha extends GDO_Module
 		$f = 'GDO/Core/thm/default/fonts/';
 		$fonts = [
 			"{$f}arial.ttf" => 'arial',
-// 			"{$f}kitten.ttf" => 'kitten',
-// 			"{$f}kitten2.ttf" => 'kitten2',
 			"{$f}microgramma.ttf" => 'microgramma',
-// 			"{$f}teen.ttf" => 'teen',
 		];
 		return json_encode($fonts);
 	}
@@ -54,28 +62,22 @@ final class Module_Captcha extends GDO_Module
 
 	public function onIncludeScripts(): void
 	{
-		$this->addCss('css/captcha.css');
+		$this->addCSS('css/captcha.css');
 	}
 
 	public function cfgCaptchaBG(): string { return $this->getConfigValue('captcha_bg'); }
 
 
-	#############
-	### Hooks ###
-	#############
 
-	public function cfgCaptchaWidth(): string { return $this->getConfigVar('captcha_width'); }
+	public function cfgCaptchaWidth(): int { return $this->getConfigValue('captcha_width'); }
 
-	public function cfgCaptchaHeight(): string { return $this->getConfigVar('captcha_height'); }
 
-	###############
-	### Private ###
-	###############
+	public function cfgCaptchaHeight(): int { return $this->getConfigValue('captcha_height'); }
+
 
 	public function cfgCaptchaFonts(): array
 	{
-		$fonts = json_decode($this->getConfigVar('captcha_font'), true);
-		return $fonts;
+		return json_decode($this->getConfigVar('captcha_font'), true);
 	}
 
 }
