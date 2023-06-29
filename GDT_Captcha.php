@@ -25,7 +25,7 @@ class GDT_Captcha extends GDT_String
 		$this->initial(GDO_Session::get('php_captcha_lock'));
 	}
 
-	public function getDefaultName(): string { return 'captcha'; }
+	public function gdtDefaultName(): ?string { return 'captcha'; }
 
 	public function renderForm(): string
 	{
