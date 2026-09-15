@@ -37,10 +37,11 @@ class Image extends MethodAjax
 		{
 			$aFonts[] = GDO_PATH . $path;
 		}
-		$rgbcolor = ltrim($module->cfgCaptchaBG(), '#');
+		$background = ltrim($module->cfgCaptchaBG(), '#');
+		$foreground = ltrim($module->cfgCaptchaFG(), '#');
 		$width = $module->cfgCaptchaWidth();
 		$height = $module->cfgCaptchaHeight();
-		$oVisualCaptcha = new PhpCaptcha($aFonts, $width, $height, $rgbcolor);
+		$oVisualCaptcha = new PhpCaptcha($aFonts, $width, $height, $background, $foreground);
 
 		if ($this->hasInputFor('new'))
 		{

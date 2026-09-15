@@ -55,7 +55,7 @@ define('CAPTCHA_SESSION_ID', 'php_captcha');
 define('CAPTCHA_WIDTH', 240); // max 500
 define('CAPTCHA_HEIGHT', 55); // max 200
 define('CAPTCHA_NUM_CHARS', 5);
-define('CAPTCHA_NUM_LINES', 80);
+define('CAPTCHA_NUM_LINES', 8);
 define('CAPTCHA_CHAR_SHADOW', false);
 define('CAPTCHA_OWNER_TEXT', '');
 define('CAPTCHA_CHAR_SET', ''); // defaults to A-Z
@@ -92,12 +92,14 @@ class PhpCaptcha
 	public $sFileType;
 	public $sCode = '';
 	public $bgrgb = 'ffffff'; # Background color
+	public $fgrgb = '111111'; # Foreground color
 
 	public function __construct(
 		$aFonts, // array of TrueType fonts to use - specify full path
 		$iWidth = CAPTCHA_WIDTH, // width of image
 		$iHeight = CAPTCHA_HEIGHT, // height of image
-		$bgrgb = 'ffffff'
+		$bgrgb = 'ffffff',
+		$fgrgb = '111111'
 	) {
 		// get parameters
 		$this->aFonts = $aFonts;
@@ -115,6 +117,7 @@ class PhpCaptcha
 		$this->SetWidth($iWidth);
 		$this->SetHeight($iHeight);
 		$this->SetBackgroundColor($bgrgb);
+		$this->SetForegroundColor($fgrgb);
 	}
 
 	public function SetNumChars($iNumChars)
@@ -254,6 +257,25 @@ class PhpCaptcha
 		$this->bgrgb = $rgb;
 	}
 
+	public function SetForegroundColor($rgb)
+	{
+		if (strlen($rgb) !== 6)
+		{
+			die('Class_Captcha::SetForegroundColor() argument is not string of length 6.');
+		}
+		$this->fgrgb = $rgb;
+	}
+
+	private function foregroundColor()
+	{
+		return imagecolorallocate(
+			$this->oImage,
+			intval(substr($this->fgrgb, 0, 2), 16),
+			intval(substr($this->fgrgb, 2, 2), 16),
+			intval(substr($this->fgrgb, 4, 2), 16),
+		);
+	}
+
 	public static function Validate($sUserCode, $bCaseInsensitive = true)
 	{
 		if ($bCaseInsensitive)
@@ -359,22 +381,14 @@ class PhpCaptcha
 
 	public function DrawLines()
 	{
+		$iLineColour = $this->foregroundColor();
+		imagesetthickness($this->oImage, 2);
 		for ($i = 0; $i < $this->iNumLines; $i++)
 		{
-			// allocate colour
-			if ($this->bUseColour)
-			{
-				$iLineColour = imagecolorallocate($this->oImage, rand(100, 250), rand(100, 250), rand(100, 250));
-			}
-			else
-			{
-				$iRandColour = rand(100, 250);
-				$iLineColour = imagecolorallocate($this->oImage, $iRandColour, $iRandColour, $iRandColour);
-			}
-
 			// draw line
 			imageline($this->oImage, rand(0, $this->iWidth), rand(0, $this->iHeight), rand(0, $this->iWidth), rand(0, $this->iHeight), $iLineColour);
 		}
+		imagesetthickness($this->oImage, 1);
 	}
 
 	public function GenerateCode($challenge = true)
@@ -425,29 +439,8 @@ class PhpCaptcha
 			// select random font
 			$sCurrentFont = $this->aFonts[array_rand($this->aFonts)];
 
-			// select random colour
-			if ($this->bUseColour)
-			{
-				$iTextColour = imagecolorallocate($this->oImage, rand(0, 100), rand(0, 100), rand(0, 100));
-
-				if ($this->bCharShadow)
-				{
-					// shadow colour
-					$iShadowColour = imagecolorallocate($this->oImage, rand(0, 100), rand(0, 100), rand(0, 100));
-				}
-			}
-			else
-			{
-				$iRandColour = rand(0, 100);
-				$iTextColour = imagecolorallocate($this->oImage, $iRandColour, $iRandColour, $iRandColour);
-
-				if ($this->bCharShadow)
-				{
-					// shadow colour
-					$iRandColour = rand(0, 100);
-					$iShadowColour = imagecolorallocate($this->oImage, $iRandColour, $iRandColour, $iRandColour);
-				}
-			}
+			$iTextColour = $this->foregroundColor();
+			$iShadowColour = $iTextColour;
 
 			// select random font size
 			$iFontSize = rand($this->iMinFontSize, $this->iMaxFontSize);
