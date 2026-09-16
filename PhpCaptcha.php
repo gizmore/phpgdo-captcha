@@ -55,7 +55,8 @@ define('CAPTCHA_SESSION_ID', 'php_captcha');
 define('CAPTCHA_WIDTH', 240); // max 500
 define('CAPTCHA_HEIGHT', 55); // max 200
 define('CAPTCHA_NUM_CHARS', 5);
-define('CAPTCHA_NUM_LINES', 8);
+define('CAPTCHA_NUM_LINES', 12);
+define('CAPTCHA_FG_VARIANCE', 8);
 define('CAPTCHA_CHAR_SHADOW', false);
 define('CAPTCHA_OWNER_TEXT', '');
 define('CAPTCHA_CHAR_SET', ''); // defaults to A-Z
@@ -268,11 +269,17 @@ class PhpCaptcha
 
 	private function foregroundColor()
 	{
+		$variance = CAPTCHA_FG_VARIANCE;
+		$channel = static function (string $hex) use ($variance): int
+		{
+			return max(0, min(255, intval($hex, 16) + Random::rand(-$variance, $variance)));
+		};
+
 		return imagecolorallocate(
 			$this->oImage,
-			intval(substr($this->fgrgb, 0, 2), 16),
-			intval(substr($this->fgrgb, 2, 2), 16),
-			intval(substr($this->fgrgb, 4, 2), 16),
+			$channel(substr($this->fgrgb, 0, 2)),
+			$channel(substr($this->fgrgb, 2, 2)),
+			$channel(substr($this->fgrgb, 4, 2)),
 		);
 	}
 
