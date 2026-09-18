@@ -56,7 +56,7 @@ define('CAPTCHA_WIDTH', 240); // max 500
 define('CAPTCHA_HEIGHT', 55); // max 200
 define('CAPTCHA_NUM_CHARS', 5);
 define('CAPTCHA_NUM_LINES', 12);
-define('CAPTCHA_FG_VARIANCE', 8);
+define('CAPTCHA_FG_VARIANCE', 0x14);
 define('CAPTCHA_CHAR_SHADOW', false);
 define('CAPTCHA_OWNER_TEXT', '');
 define('CAPTCHA_CHAR_SET', ''); // defaults to A-Z
